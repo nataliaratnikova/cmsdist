@@ -14,15 +14,15 @@ Source: https://github.com/nataliaratnikova/PHEDEX/archive/%{n}_%{downloadt}.tar
 %build
 
 %install
-mkdir -p %i/etc/{env,profile}.d
-mkdir -p %i/bin
 # Get all SpaceMon sources 
 tar -c perl_lib/DMWMMON/SpaceMon | tar -x -C %i
+
 # Get the binaries from the Utilities: 
+mkdir -p %i/bin
 tar -c -C Utilities spacemon spacemon-test | tar -x -C %i/bin
 
 # Generate dependencies-setup.{sh,csh} so init.{sh,csh} picks full environment.
-ln -sf ../profile.d/init.sh %i/etc/env.d/11-datasvc.sh
+mkdir -p %i/etc/profile.d
 : > %i/etc/profile.d/dependencies-setup.sh
 : > %i/etc/profile.d/dependencies-setup.csh
 for tool in $(echo %{requiredtools} | sed -e's|\s+| |;s|^\s+||'); do

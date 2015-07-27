@@ -10,11 +10,16 @@ Source: https://github.com/nataliaratnikova/PHEDEX/archive/%{n}_%{downloadt}.tar
 %prep
 
 %setup -n %{setupdir}
+ 
 %build
 
 %install
 mkdir -p %i/etc/{env,profile}.d
-tar -cf - * | (cd %i && tar -xf -)
+mkdir -p %i/bin
+# Get all SpaceMon sources 
+tar -c perl_lib/DMWMMON/SpaceMon | tar -x -C %i
+# Get the binaries from the Utilities: 
+tar -c -C Utilities spacemon spacemon-test | tar -x -C %i/bin
 
 # Generate dependencies-setup.{sh,csh} so init.{sh,csh} picks full environment.
 ln -sf ../profile.d/init.sh %i/etc/env.d/11-datasvc.sh

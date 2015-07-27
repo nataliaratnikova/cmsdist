@@ -1,4 +1,4 @@
-### RPM cms spacemon-client 0.0.1
+### RPM cms spacemon-client 0.0.5
 ## INITENV +PATH PERL5LIB %i/perl_lib
 
 %define downloadn %(echo %n | cut -f1 -d-)

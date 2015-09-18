@@ -1,4 +1,4 @@
-### RPM cms DMWMMON-datasvc 1.0.2
+### RPM cms DMWMMON-datasvc 1.0.3
 ## INITENV +PATH PERL5LIB %i/perl_lib
 
 %define downloadn %(echo %n | cut -f1 -d-)
@@ -30,7 +30,7 @@ Provides: perl(URI::Escape)
 %setup -n %{setupdir}
 
 %build
-# We are reusing phedex style sheets in dmwmmon: 
+# We are reusing PhEDEx style sheets in DMWMMON: 
 mv %_builddir/%{setupdir}/PhEDExWeb/DataService/static/{phedex,dmwmmon}_pod.css
 
 %install

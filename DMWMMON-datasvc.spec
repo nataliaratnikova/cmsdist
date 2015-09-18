@@ -26,22 +26,31 @@ Provides: perl(XML::LibXML)
 Provides: perl(URI::Escape)
 
 %prep
-#%setup -n DMWMMON
+
 %setup -n %{setupdir}
-rm -rf Build Custom Documentation Testbed Utilities
-rm -rf Contrib Deployment Migration PhEDExWeb/ApplicationServer Schema Toolkit VERSION
-rm -rf perl_lib/template
-rm -rf perl_lib/PHEDEX/{BlockActivate,BlockDelete,Debug.pm,Monalisa.pm,Testbed,BlockAllocator,BlockLatency,Error,Monitoring,Transfer,BlockArrive,BlockMonitor,File,BlockConsistency,Infrastructure,BlockDeactivate,LoadTest,Schema}
-rm perl_lib/PHEDEX/RequestAllocator/Agent.pm
-rm -rf perl_lib/PHEDEX/Core/{Agent,Config.pm,Agent.pm,JobManager.pm,RFIO.pm,Command.pm,Help.pm,SQLPLUS.pm,Config}
-rm -rf perl_lib/PHEDEX/Web/API/{Agent*,Block*,ComponentStatus.pm,D*,Error*,File*,Group*,Inject.pm,L*,M*,NodeUsage*,P*,Request*,SENames.pm,Shift,Subscri*,T*,U*}
 
 %build
+# We are reusing phedex style sheets in dmwmmon: 
 mv %_builddir/%{setupdir}/PhEDExWeb/DataService/static/{phedex,dmwmmon}_pod.css
 
 %install
+# Getting  all DMWMMON-datasvc required sources
+
+#EXAMPLE from spacemon-client:
+#tar -c perl_lib/DMWMMON/SpaceMon | tar -x -C %i
+
+# Get the binaries from the Utilities: 
+#mkdir -p %i/bin
+#tar -c -C Utilities spacemon spacemon-test | tar -x -C %i/bin
+
+tar -c README.txt | tar -x -C %i
+tar -c perl_lib/PHEDEX/Core | tar -x -C %i
+tar -c perl_lib/PHEDEX/RequestAllocator  | tar -x -C %i
+tar -c PhEDExWeb/ | tar -x -C %i
+# Add new data service APIs in this list as needed:
+tar -c perl_lib/PHEDEX/Web/API/{Auth.pm,Bounce.pm,Nodes.pm,StorageInsert.pm,StorageUsage.pm} | tar -x -C %i
+
 mkdir -p %i/etc/{env,profile}.d
-tar -cf - * | (cd %i && tar -xf -)
 
 # Generate dependencies-setup.{sh,csh} so init.{sh,csh} picks full environment.
 ln -sf ../profile.d/init.sh %i/etc/env.d/11-datasvc.sh

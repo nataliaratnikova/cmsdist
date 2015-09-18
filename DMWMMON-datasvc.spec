@@ -34,25 +34,15 @@ Provides: perl(URI::Escape)
 mv %_builddir/%{setupdir}/PhEDExWeb/DataService/static/{phedex,dmwmmon}_pod.css
 
 %install
-# Getting  all DMWMMON-datasvc required sources
-
-#EXAMPLE from spacemon-client:
-#tar -c perl_lib/DMWMMON/SpaceMon | tar -x -C %i
-
-# Get the binaries from the Utilities: 
-#mkdir -p %i/bin
-#tar -c -C Utilities spacemon spacemon-test | tar -x -C %i/bin
-
+# Getting  all DMWMMON-datasvc required sources:
 tar -c README.txt | tar -x -C %i
-tar -c perl_lib/PHEDEX/Core | tar -x -C %i
-tar -c perl_lib/PHEDEX/RequestAllocator  | tar -x -C %i
-tar -c PhEDExWeb/ | tar -x -C %i
+tar -c perl_lib/PHEDEX/{Core,RequestAllocator} | tar -x -C %i
+tar -c PhEDExWeb/{DataService,README} | tar -x -C %i
 # Add new data service APIs in this list as needed:
 tar -c perl_lib/PHEDEX/Web/API/{Auth.pm,Bounce.pm,Nodes.pm,StorageInsert.pm,StorageUsage.pm} | tar -x -C %i
 
-mkdir -p %i/etc/{env,profile}.d
-
 # Generate dependencies-setup.{sh,csh} so init.{sh,csh} picks full environment.
+mkdir -p %i/etc/{env,profile}.d
 ln -sf ../profile.d/init.sh %i/etc/env.d/11-datasvc.sh
 : > %i/etc/profile.d/dependencies-setup.sh
 : > %i/etc/profile.d/dependencies-setup.csh

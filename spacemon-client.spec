@@ -1,11 +1,12 @@
-### RPM cms spacemon-client 0.0.5
-## INITENV +PATH PERL5LIB %i/perl_lib
+### RPM cms spacemon-client 1.0.0
+## INITENV +PATH PERL5LIB %i
+## INITENV +PATH PATH %i/DMWMMON/SpaceMon/Utilities
 
 %define downloadn %(echo %n | cut -f1 -d-)
-%define downloadm PHEDEX
+%define downloadm DMWMMON
 %define downloadt %(echo %realversion | tr '.' '_')
 %define setupdir  %{downloadm}-%{n}_%{downloadt}
-Source: https://github.com/nataliaratnikova/PHEDEX/archive/%{n}_%{downloadt}.tar.gz
+Source: https://github.com/dmwm/DMWMMON/archive/%{n}_%{downloadt}.tar.gz
 
 %prep
 
@@ -14,12 +15,9 @@ Source: https://github.com/nataliaratnikova/PHEDEX/archive/%{n}_%{downloadt}.tar
 %build
 
 %install
-# Get all SpaceMon sources 
-tar -c perl_lib/DMWMMON/SpaceMon | tar -x -C %i
-
-# Get the binaries from the Utilities: 
-mkdir -p %i/bin
-tar -c -C Utilities spacemon spacemon-test | tar -x -C %i/bin
+# Get all SpaceMon sources into DMWMMON, as module names expect it:
+mkdir -p %i/DMWMMON
+tar -c SpaceMon | tar -x -C %i/DMWMMON
 
 # Generate dependencies-setup.{sh,csh} so init.{sh,csh} picks full environment.
 mkdir -p %i/etc/profile.d

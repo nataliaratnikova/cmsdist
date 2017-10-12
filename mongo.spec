@@ -3,7 +3,8 @@
 
 Source: http://downloads.mongodb.org/src/mongodb-src-r%{realversion}.tar.gz
 Patch: mongo3.2
-Requires: python scons rotatelogs
+Requires: gcc rotatelogs
+BuildRequires: python scons
 
 Provides: libpcap.so.0.8.3
 Provides: libpcap.so.0.8.3()(64bit)
